@@ -1,0 +1,67 @@
+﻿@model EAP_Exam.Data.ExchangeRatio
+
+@{
+    ViewData["Title"] = "View";
+}
+
+<h2>View</h2>
+
+<h4>ExchangeRatio</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="View">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Id" />
+            <div class="form-group">
+                <label class="control-label">Amount</label>
+                <input name="Amount" class="form-control" />
+                <select name="currencyId">
+                    <option>1</option>
+                    <option>1</option>
+                    <option>1</option>
+                    <option>1</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<script src="~/lib/jquery/dist/jquery.js"></script>
+<script>
+    $(document).ready(function () {
+        $(".addGrade").click(function () {
+            $(this).closest("td").next().removeClass("hidden");
+            $(this).addClass("hidden");
+        });
+        $(".btnSubmit").click(function (){
+            var formData = $(this).closest($(".gradeForm")).serializeArray();
+            $.ajax({
+                type: 'POST',
+                url: '/Accounts/AddGrades',
+                data: formData,
+                success: function () {
+                    alert("success");
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    if (xhr.status == 409) {
+                        alert("Sinh vien da co diem mon hoc nay");
+                    }
+                }
+            });
+            $(this).closest("td").addClass("hidden");
+            $(this).closest("td").prev().find(".addGrade").removeClass("hidden");
+        });
+    });
+</script>
+
+<div>
+    <a asp-action="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
